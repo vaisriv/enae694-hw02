@@ -1,0 +1,13 @@
+descanso-voyager:
+    type: Report
+    title: Voyager Telecommunications
+    author:
+        - Ludwig, Roger
+        - Taylor, Jim
+    date: 2002-03
+    genre: DESCANSO Design and Performance Summary Series
+    serial-number: "4"
+    publisher:
+        name: Jet Propulsion Laboratory, California Institute of Technology
+        location: Pasadena, California
+    url: https://descanso.jpl.nasa.gov/DPSummary/Descanso4--Voyager_new.pdf

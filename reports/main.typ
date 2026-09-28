@@ -27,19 +27,23 @@
 #let vecrowOld = vecrow
 #let vecrow = vecrowOld.with(delim: "[")
 
+// custom units
+#add-unit("decibelIsotropic", "dBi", "upright(\"dBi\")", space: true)
+#add-unit("decibelWatt", "dBW", "upright(\"dBW\")", space: true)
+
 ////////////////////
 // Document Setup //
 ////////////////////
 
 // assignment info
 #show: homework.with(
-    title: "HW00",
+    title: "HW02 - Received Power and Link Geometry",
     author: "Vai Srivastava",
     collaborators: [],
-    course-id: "Course: Description",
-    instructor: "Instructor",
+    course-id: "ENAE694: Spacecraft Communications",
+    instructor: "Prof. David Israel",
     semester: "Fall 2026",
-    due-time: "January 01st. at 23:59",
+    due-time: "September 28th. at 17:00",
 
     // (defaults to A4)
     paper-size: "us-letter", 
@@ -58,36 +62,53 @@
 // Problems and Solutions //
 ////////////////////////////
 
-#prob(title: [Parts #emph[(\# pts)]])[
-    1. Instructions
-    <hwk:p01a>
-
-    2. Instructions
-    <hwk:p01b>
+#prob(title: [Slant Range #emph[(20 pts.)]])[
+    A spacecraft is in a circular orbit #qty(500, "km") above Earth. Calculate its slant range from a ground station when its elevation angle is #qty(10, "degree"). Use an Earth radius of #qty(6378, "km"), neglect station altitude, and round to the nearest kilometer. Set your calculator to degrees.
 ] <hwk:p01>
 
-1. Answer
+// TODO:
+answer
 
-<hwk:s01a>
-
-2. Answer
-
-<hwk:s01b>
+<hwk:s01>
 
 #pagebreak(weak: true)
 
-#prob(title: [Code #emph[(\# pts)]])[
-    Instructions
+#prob(title: [Voyager 2 Received Power #emph[(60 pts.)]])[
+    Calculate total recieved signal power for Voyager 2' X-band link to DSS-43, the #qty(70, "m") antenna in Canberra. Use the updated range below with radio parameters from JPL's January 1st., 1996 budget @descanso-voyager[Table 5-3, p. 26].
+
+    - Range: #qty(21476670660, "km")
+    - Frequency: #qty(8.415, "GHz")
+    - Transmit Power: #qty(12.3, "W")
+    - Transmit Antenna Gain: #qty(48.20, "dBi")
+    - Recieve Antenna Gain: #qty(74.01, "dBi")
+
+    Use #qty(0, "dB") transmit feed loss and #qty(0.42, "dB") other losses (pointing, atmosphere, and polarization combined).
+
+    1. Calculate [EIRP] in #unit("dBW"). #emph[(20 pts.)]
+    <hwk:p02a>
+
+    2. Calculate free-space path loss [$"L"_"p"$] in #unit("dB"). #emph[(20 pts.)]
+    <hwk:p02b>
+
+    3. Calculate recieved power [$"P"_"r"$] in #unit("dBW"). Round your results to one decimal place. #emph[(20 pts.)]
+    <hwk:p02c>
 ] <hwk:p02>
 
-#figure(
-    image("../outputs/figures/s02.png", width: 65%),
-    caption: [Sine Wave on $x = [0 10]$]
-) <fig:s02>
+// TODO:
+answer
 
-#raw(read("../outputs/text/s02.txt"), block: true) <code:s02>
+<hwk:s02>
 
-See the #link("https://github.com/vaisriv/enae694-hw02/blob/main/src/index.py#L1")[Python code] for this problem.
+#pagebreak(weak: true)
+
+#prob(title: [The Elevation Mask Trade #emph[(20 pts.)]])[
+    For the Earth-orbiting spacecraft in #link(<hwk:p01>)[Problem 1], suppose we increase the minimum elevation angle used for contacts. In two or three sentences, explain what happens to the maximum useful slant range, the worst-case free-space path loss, and the available contact time. Keep the orbit, station, frequency, and antenna gains unchanged.
+] <hwk:p03>
+
+// TODO:
+answer
+
+<hwk:s03>
 
 #pagebreak(weak: true)
 
@@ -95,3 +116,37 @@ See the #link("https://github.com/vaisriv/enae694-hw02/blob/main/src/index.py#L1
 
 #codly(header: [./src/index.py])
 #raw(read("../src/index.py"), block: true, lang: "python") <code:index.py>
+
+#pagebreak(weak: true)
+
+== References
+
+=== Formulas
+
+#set math.equation(numbering: "(1)")
+
+$
+    d = sqrt((R_E + h)^2 - R_E^2 cos^2(e) - R_E sin(E))
+$
+
+$
+    [P] = 10 log_10 (P/(1 W))
+$
+
+$
+    [E I R P] = [P_t] - [L_t] + [G_t]
+$
+
+$
+    [L_p] = 92.45 + 20 log_10(R) + 20 log_10(f)
+$
+
+$
+    [P_r] = [E I R P] - [L_p] + [G_r] - [L_"other"]
+$
+
+For slant range, $h$ is altitude and $e$ is elevation. In the path-loss formula, enter $R$ in #unit("km") and $f$ in #unit("GHz"). Brackets denote decibel values. Power is in #unit("dBW"), antenna gains are in #unit("dBi"), and losses are in #unit("dB"). Record losses as positive amounts and subtract them.
+
+=== Bibliography
+
+#bibliography("../references/literature.yaml", title: none) <ref:bibliography>
